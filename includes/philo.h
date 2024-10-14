@@ -49,6 +49,9 @@ void				init_philosophers(t_philo *philos);
 // process
 
 void				*process(void *param);
+void 				thinking(t_philo *philo, long id);
+void 				eating(t_philo *philo, long id);
+void 				sleeping(t_philo *philo, long id);
 
 // Utils
 
