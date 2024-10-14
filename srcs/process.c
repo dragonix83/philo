@@ -17,20 +17,28 @@ void	*process(void *param)
 	t_philo	*philo;
 
 	philo = (t_philo *)param;
-	if (philo->id % 2 == 0)
-		usleep(100);
-	if (pthread_mutex_lock(philo[philo->id].left_fork) == 0
-		&& pthread_mutex_lock(philo[philo->id].right_fork) == 0)
+	if (philo->id % 2 == 1)
+		usleep(1000);
+	while (1)
 	{
-		sleep(1);
-		printf("Philosopher #%ld est en train de penser\n", philo->id);
-		sleep(1);
-		printf("Philosopher #%ld est en train de manger\n", philo->id);
-		sleep(1);
-		printf("Philosopher #%ld est en train de dormir\n", philo->id);
-		sleep(1);
-		pthread_mutex_unlock(philo[philo->id].left_fork);
-		pthread_mutex_unlock(philo[philo->id].right_fork);
+		if (philo->id % 2 == 1)
+		{
+			pthread_mutex_lock(philo->left_fork);
+			pthread_mutex_lock(philo->right_fork);
+		}
+		else
+		{
+			pthread_mutex_lock(philo->right_fork);
+			pthread_mutex_lock(philo->left_fork);
+		}
+			thinking(philo, philo->id);
+			usleep(100);
+			eating(philo, philo->id);
+			usleep(philo->global->time_to_eat * 1000);
+			pthread_mutex_unlock(philo->left_fork);
+			pthread_mutex_unlock(philo->right_fork);
+			sleeping(philo, philo->id);
+			usleep(philo->global->time_to_sleep * 1000);
 	}
 	return (NULL);
 }
