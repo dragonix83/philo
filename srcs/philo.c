@@ -17,23 +17,21 @@ static void	start_philo(t_philo *philo, int i)
 	int	j;
 
 	j = 0;
-	while (1)
+	
+	while (j < i)
 	{
-		while (i > 0)
-		{
-			printf("A new philosopher sat around the table, his ID is : #%ld\n",
-				philo[j].id);
-			pthread_create(&philo->global->philosopher[philo[j].id], NULL,
-				process, (void *)&philo[j]);
-			usleep(1);
-			j++;
-			i--;
-		}
+		printf("A new philosopher sat around the table, his ID is : #%ld\n",
+		philo[j].id);
+		pthread_create(&philo->global->philosopher[j], NULL,
+		process, (void *)&philo[j]);
+		usleep(100);
+		j++;
 	}
-	while (i <= philo->global->nb_philo)
+	j = 0;
+	while (j < i)
 	{
 		pthread_join(philo->global->philosopher[philo->id - 1], NULL);
-		i++;
+		j++;
 	}
 }
 
@@ -51,3 +49,4 @@ int	main(int argc, char **argv)
 	free(philo);
 	pthread_exit(NULL);
 }
+
